@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <Target Name="BuildTailwindCSS" BeforeTargets="Build">
     <Exec Command="npm run build:css" />
@@ -10,21 +10,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Shawsoft.Razor.Entra</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Connor Shaw</Authors>
     <Description>A Razor Class Library for working with Entra</Description>
-    <PackageTags>Razor UI Components</PackageTags>
+    <PackageTags>Razor Services</PackageTags>
     <RepositoryUrl>https://github.com/shawsoft-io/Shawsoft.Razor.UI</RepositoryUrl>
     <EnableDefaultItems>true</EnableDefaultItems>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <EnableDefaultContentItems>false</EnableDefaultContentItems>
-  </PropertyGroup>
 
   <ItemGroup>
     <Content Include="**/*.razor" />
+    <Content Include="wwwroot/**" Pack="true"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -37,15 +35,6 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
     <PackageReference Include="Microsoft.Graph" Version="5.67.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\css\styles.css">
-      <Pack>true</Pack>
-    </Content>
-    <Content Update="wwwroot\css\styles.generated.css">
-      <Pack>true</Pack>
-    </Content>
   </ItemGroup>
 
 </Project>
