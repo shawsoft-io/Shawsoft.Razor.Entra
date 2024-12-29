@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shawsoft.Razor.Entra", "Shawsoft.Razor.Entra.csproj", "{613C946D-C13D-4798-9FE1-503C408945C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{613C946D-C13D-4798-9FE1-503C408945C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{613C946D-C13D-4798-9FE1-503C408945C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{613C946D-C13D-4798-9FE1-503C408945C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{613C946D-C13D-4798-9FE1-503C408945C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A3FFE3EF-2898-4181-BB0D-30FC58C1F110}
+	EndGlobalSection
+EndGlobal

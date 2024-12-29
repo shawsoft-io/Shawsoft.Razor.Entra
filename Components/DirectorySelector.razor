@@ -1,0 +1,171 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.Graph
+@using System.Timers;
+@using Shawsoft.Razor.Entra.Models
+@inject GraphServiceClient GraphService
+@inject EntraDirectoryService Entra
+
+<div class="flex flex-col gap-4">
+
+    <div class="relative mt-2 rounded-md shadow-sm">
+        <!-- Icon container -->
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-5 w-5 text-gray-400">
+                <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+            </svg>
+        </div>
+        <!-- Input -->
+        <InputText type="text"
+                   @bind-Value="_searchString"
+                   @oninput="HandleInput"
+                   placeholder="Search for Hoist employee"
+                   class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                   style="padding-left: 35px"/>
+    </div>
+
+    @if (_entraUsers?.Any() == true)
+    {
+        <p class="mb-1">@_entraUsers.Count(w => w.Identity.IsUser) results:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+            @foreach (var user in _entraUsers.Where(w => w.Identity.IsUser).Take(6))
+            {
+                <div class="flex items-center space-x-3 rounded-lg border bg-white p-5 shadow-sm hover:border-gray-400 overflow-hidden cursor-pointer">
+                    <div class="flex-1">
+                        <a @onclick="() => AddHoistEmployee(user)" class="block focus:outline-none">
+                            <p class="text-sm font-medium text-gray-900">@($"{user.GivenName} {user.Surname}")</p>
+                            <p class="text-sm text-gray-500 truncate">@user.JobDetails?.JobTitle</p>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    <div class="mt-2 flex justify-center rounded-lg border @(Users?.Any() ?? false ? "" : "border-dashed px-6 py-10") border-gray-900/25 ">
+        @if (Users?.Any() == true)
+        {
+            <ul class="divide-y bg-white rounded-lg overflow-hidden w-full">
+                @foreach (var emp in Users.OrderBy(u => u?.GivenName))
+                {
+                    <li class="flex justify-between items-center px-4 py-5 sm:px-6">
+                        <div class="flex items-center gap-x-4">
+                            <Avatar User="emp" ClassNames="h-12 w-12 rounded-full hidden sm:flex" />
+                            <div class="min-w-0">
+                                <p class="text-sm font-semibold text-gray-900">
+                                    @($"{emp?.GivenName} {emp?.Surname}")
+                                </p>
+                                <p class="text-sm text-gray-500 flex gap-x-2">
+                                    <span class="font-semibold">@emp?.JobDetails?.JobTitle </span> 
+                                    <span class="hidden sm:block">@emp?.JobDetails?.Department</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-x-4">
+                            <span class="text-xs font-medium text-pink-700 bg-pink-50 px-2 py-0.5 rounded-full hidden sm:block">@emp?.JobDetails?.Country</span>
+                            <button type="button" @onclick="() => RemoveEmployee(emp)" class="text-gray-800 hover:text-red-600 flex items-center">
+                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                </svg>
+
+                            </button>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
+                </svg>
+
+                <p class="text-xs leading-5 text-gray-600">
+                    You must specify which Hoist Finance employees were involved.
+                </p>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<EntraUser> Users { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<List<EntraUser>> UsersChanged { get; set; }
+
+    private List<EntraUser> _entraUsers = new();
+    private string? _searchString;
+    private Timer? _debounceTimer;
+    private CancellationTokenSource? _cts;
+
+    public DirectorySelector()
+    {
+        _debounceTimer = new Timer(500) { AutoReset = false };
+        _debounceTimer.Elapsed += async (_, _) => await InvokeAsync(SearchUsers);
+    }
+
+    private void HandleInput(ChangeEventArgs args)
+    {
+        _searchString = args.Value?.ToString();
+        _debounceTimer?.Stop();
+        _debounceTimer?.Start();
+    }
+
+    private async Task SearchUsers()
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+        {
+            _entraUsers = new();
+            StateHasChanged();
+            return;
+        }
+
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+
+        try
+        {
+            var results = await Entra.GetAppUserByName(_searchString, 20, _cts.Token);
+            _entraUsers = results ?? new();
+        }
+        catch (OperationCanceledException)
+        {
+            _entraUsers = new();
+        }
+        catch (Exception ex)
+        {
+            // Log error
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            StateHasChanged();
+        }
+    }
+
+    private async Task AddHoistEmployee(EntraUser user)
+    {
+        if (Users.All(u => u.Identity?.Id != user.Identity?.Id))
+        {
+            user.Photo = await Entra.GetPhoto(user.Identity?.Id);
+            Users.Add(user);
+            await UsersChanged.InvokeAsync(Users);
+        }
+
+        _searchString = string.Empty;
+        _entraUsers = new();
+    }
+
+    private void RemoveEmployee(EntraUser user)
+    {
+        Users.Remove(user);
+        UsersChanged.InvokeAsync(Users);
+    }
+
+    public void Dispose()
+    {
+        _debounceTimer?.Dispose();
+        _cts?.Dispose();
+    }
+}

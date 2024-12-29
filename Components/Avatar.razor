@@ -1,0 +1,22 @@
+﻿@if (User?.Photo == null)
+{
+    <div class="initials-circle @(new MarkupString(ClassNames ?? ""))" style="background-color:@AvatarHelper.GetRandomColor(User?.Surname ?? "XX")">
+        <span>@User?.GivenName?.Substring(0, 1)</span>
+        <span>@User?.Surname?.Substring(0, 1)</span>
+    </div>
+}
+else
+{
+    <img class="@(new MarkupString(ClassNames ?? ""))" src="@User.Photo" alt="@User.DisplayName" />
+}
+
+
+@code {
+
+    [Parameter]
+    public EntraUser? User { get; set; }
+
+    [Parameter]
+    public string? ClassNames { get; set; }
+
+}
