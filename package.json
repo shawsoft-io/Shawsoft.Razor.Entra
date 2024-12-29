@@ -5,6 +5,6 @@
     "tailwindcss": "^3.4.17"
   },
   "scripts": {
-    "build:css": "npx tailwindcss -i ./wwwroot/css/styles.css -o ./wwwroot/css/styles.entra.css --minify"
+    "build:css": "npx tailwindcss -i ./wwwroot/css/razor.entra.styles.css -o ./wwwroot/css/razor.entra.styles.generated.css --minify"
   }
 }

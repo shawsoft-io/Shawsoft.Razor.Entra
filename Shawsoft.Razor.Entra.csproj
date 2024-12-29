@@ -8,6 +8,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Shawsoft.Razor.Entra</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Connor Shaw</Authors>
+    <Description>A Razor Class Library for working with Entra</Description>
+    <PackageTags>Razor UI Components</PackageTags>
+    <RepositoryUrl>https://github.com/shawsoft-io/Shawsoft.Razor.UI</RepositoryUrl>
+    <EnableDefaultItems>true</EnableDefaultItems>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,9 +26,6 @@
   <ItemGroup>
     <Content Include="**/*.razor" />
   </ItemGroup>
-
-
-
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
