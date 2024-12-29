@@ -10,11 +10,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Shawsoft.Razor.Entra</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>Connor Shaw</Authors>
     <Description>A Razor Class Library for working with Entra</Description>
     <PackageTags>Razor Services</PackageTags>
-    <RepositoryUrl>https://github.com/shawsoft-io/Shawsoft.Razor.UI</RepositoryUrl>
+    <RepositoryUrl>https://github.com/shawsoft-io/Shawsoft.Razor.Entra</RepositoryUrl>
     <EnableDefaultItems>true</EnableDefaultItems>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
