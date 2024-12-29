@@ -21,7 +21,7 @@
 
 
   <ItemGroup>
-    <Content Include="**/*.razor" />
+    <Content Include="**/**" />
     <Content Include="wwwroot/**" Pack="true"/>
   </ItemGroup>
 
